@@ -51,85 +51,6 @@
 
   <main id="main">
 
-    <!-- ======= About Section ======= -->
-    <section id="about" class="about">
-      <div class="container" data-aos="fade-up">
-
-        <div class="row">
-          <div class="col-lg-6 order-1 order-lg-2" data-aos="fade-left" data-aos-delay="100">
-            <img src="https://auto.bigmir.net/i/58/99/44/4/5899444/image_main/7b0934872c80c6e357e8cda674ab847d-quality_75Xresize_crop_1Xallow_enlarge_0Xw_740Xh_400.jpg" class="img-fluid" alt="">
-          </div>
-          <div class="col-lg-6 pt-4 pt-lg-0 order-2 order-lg-1 content" data-aos="fade-right" data-aos-delay="100">
-            <h3>Біз Алматы қаласы бойынша мопед немесе мотоцикл жалға беретін компаниямыз</h3>
-            <p class="fst-italic">
-              </p>
-            <ul>
-              <li><i class="ri-check-double-line"></i> Жалға алу уақыты мен бағалары</li>
-              <table class="table table-bordered border-primary">
-                <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">Жалға алу уақыты</th>
-      <th scope="col">Бағасы теңгемен</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-
-      <td>1 сағат</td>
-      <td>1000</td>
-    </tr>
-    <tr>
-      <td>12 сағат</td>
-      <td>6000</td>
-    </tr>
-  <tr>
-      <td>1 тәулік</td>
-      <td>10000</td>
-    </tr>
-  <tr>
-      <td>1 апта</td>
-      <td>20000</td>
-    </tr>
-  <tr>
-      <td>1 ай</td>
-      <td>40000</td>
-    </tr>
-  </tbody>
-</table>
-</table>
-              <li><i class="ri-check-double-line"></i> Біздің сайт арқылы алдын ала таңдалған мопедке  брондап  қойып,келісілген уақтты алып кетуге болады</li>
-               </ul>
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End About Section -->
-
-
-
-    <!-- ======= Features Section ======= -->
-    <section id="features" class="features">
-      <div class="container" data-aos="fade-up">
-
-        <div class="row">
-          <div class="image col-lg-6" style='background-image: url("https://img03.obyava.ua/classified/0/1647/7038/200-27mbtjcipjkxha0a.jpg");' data-aos="fade-right"></div>
-          <div class="col-lg-6" data-aos="fade-left" data-aos-delay="100">
-            <div class="icon-box mt-5 mt-lg-0" data-aos="zoom-in" data-aos-delay="150">
-              <i class="bx bx-receipt"></i>
-              <h4>Біздің компанияның артықшылықтары</h4>
-              <p>Әрқвшвн сенімді</p>
-               <p> Баға сәйкестігіне кепілдік</p>
-                <p>Онлайн брондау басқару</p>
-                <p>Тегін бас тарту және өзгертулер</p>
-                <p>24/7 тұтынушыларды қолдау</p>
-            </div>
-
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Features Section -->
 
     <!-- ======= Services Section ======= -->
     <section id="services" class="services">
@@ -152,365 +73,162 @@
         <div class="row" data-aos="fade-up" data-aos-delay="100">
           <div class="col-lg-12 d-flex justify-content-center">
             <ul id="portfolio-flters">
-              <li data-filter="*" class="filter-active">Барлығы</li>
-              <li data-filter=".filter-app">Мапед жалға</li>
-              <li data-filter=".filter-card">Мотоцикл жалға</li>
-              <li data-filter=".filter-web">Сатылымдағы мапедтер</li>
-              <li data-filter=".filter-web">Сатылымдағы мотоциклдер</li>
+              {% if cat_selected == 0 %}
+                        <li data-filter="*" class="filter">Барлығы</li>
+              {% else  %}
+                        <li data-filter="*" class="filter"><a href="{% url 'home' %}">Барлығы</a></li>
+              {% endif %}
+              {% for c in cats %}
+               {% if c.pk == cat_selected %}
+                   <li data-filter=".filter-app active">{{c.name}}</li>
+                 {% else  %}
+                        <li data-filter="*" class="filter-app"><a href="{% c.get_absolute_url %}">{{c.name}}</a></li>
+              {% endif %}
+
+               {% endfor %}
             </ul>
           </div>
         </div>
 
         <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
+          {% for i in posts %}
           <div class="col-lg-4 col-md-6 portfolio-item filter-app">
             <div class="portfolio-wrap">
-              <img src="https://ivicity.kz/download/images/IMG_2213_1.jpg" class="img-fluid" alt="">
+              <img src="{{ i.photo }}" class="img-fluid" alt="">
               <div class="portfolio-info">
-                <h4>M8 скутер</h4>
-                <p>125 куб</p>
+                <h4>{{ i.title }}</h4>
+                <p>{{ i.content }}</p>
+                <p>{{ i.content1 }}</p>
+                <p>{{ i.content2 }}</p>
+                <li><a class="nav na" href="{{ i.get_absolute_url }}">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>
+
                 <div class="portfolio-links">
-                  <a href="https://ivicity.kz/download/images/IMG_2213_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
+                  <a href=" {{ i.photo}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
                   <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="https://ivicity.kz/download/images/IMG_1845.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>BWS-R Samurai</h4>
-                <p>150 куб</p>
-                <div class="portfolio-links">
-                  <a href="https://ivicity.kz/download/images/IMG_1845.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+          {% endfor %}
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="https://ivicity.kz/download/images/IMG_2088_1.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Cross </h4>
-                <p>150 куб</p>
-                <div class="portfolio-links">
-                  <a href="https://ivicity.kz/download/images/IMG_2088_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_2213_1.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>M8 скутер</h4>-->
+<!--                <p>Бағасы: 550000</p>-->
+<!--                <p>Көлемі: 125 см</p>-->
+<!--                <p>Салмағы: 100 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-4.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 2</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-4.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_2213_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-5.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Web 2</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-5.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 2"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-web">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_1845.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>BWS-R Samurai</h4>-->
+<!--                <p>Бағасы: 450000</p>-->
+<!--                <p>Көлемі: 125 см3</p>-->
+<!--                <p>Салмағы: 100 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_1845.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-6.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>App 3</h4>
-                <p>App</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-6.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_2088_1.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>Cross </h4>-->
+<!--               <p>Жалға беріледі</p>-->
+<!--                <p>Көлемі: 150 см3</p>-->
+<!--                <p>Салмағы: 120 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Жалға алу</a></li>-->
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_2088_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-7.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 1</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-7.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 1"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_2213_1.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>M8 скутер</h4>-->
+<!--                <p>Бағасы: 550000</p>-->
+<!--                <p>Көлемі: 125 см3</p>-->
+<!--                <p>Салмағы: 100 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-8.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Card 3</h4>
-                <p>Card</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-8.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Card 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_2213_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
 
-          <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-            <div class="portfolio-wrap">
-              <img src="/static/men/images/portfolio/portfolio-9.jpg" class="img-fluid" alt="">
-              <div class="portfolio-info">
-                <h4>Web 3</h4>
-                <p>Web</p>
-                <div class="portfolio-links">
-                  <a href="/static/men/images/portfolio/portfolio-9jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
-                </div>
-              </div>
-            </div>
-          </div>
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-web">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_1845.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>BWS-R Samurai</h4>-->
+<!--                <p>Бағасы: 450000</p>-->
+<!--                <p>Көлемі: 125 см3</p>-->
+<!--                <p>Салмағы: 100 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_1845.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
+<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
+<!--            <div class="portfolio-wrap">-->
+<!--              <img src="https://ivicity.kz/download/images/IMG_2088_1.jpg" class="img-fluid" alt="">-->
+<!--              <div class="portfolio-info">-->
+<!--                <h4>Cross </h4>-->
+<!--               <p>Жалға беріледі</p>-->
+<!--                <p>Көлемі: 150 см3</p>-->
+<!--                <p>Салмағы: 120 кг</p>-->
+<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Жалға алу</a></li>-->
+<!--                <div class="portfolio-links">-->
+<!--                  <a href="https://ivicity.kz/download/images/IMG_2088_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>-->
+<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+
 
         </div>
-
-      </div>
+     </div>
     </section><!-- End Portfolio Section -->
 
     <!-- ======= Counts Section ======= -->
-    <section id="counts" class="counts" >
-      <div class="container" data-aos="fade-up">
-
-        <div class="row no-gutters">
-          <div class="image col-xl-5 d-flex align-items-stretch justify-content-center justify-content-lg-start" style="background: url(/static/men/images/counts-img.jpg) center center no-repeat;" data-aos="fade-right" data-aos-delay="100"></div>
-          <div class="col-xl-7 ps-0 ps-lg-5 pe-lg-1 d-flex align-items-stretch" data-aos="fade-left" data-aos-delay="100">
-            <div class="content d-flex flex-column justify-content-center">
-              <h3>Voluptatem dignissimos provident quasi</h3>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Duis aute irure dolor in reprehenderit
-              </p>
-              <div class="row">
-                <div class="col-md-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                    <i class="bi bi-emoji-smile"></i>
-                    <span data-purecounter-start="0" data-purecounter-end="65" data-purecounter-duration="2" class="purecounter"></span>
-                    <p><strong>Happy Clients</strong> consequuntur voluptas nostrum aliquid ipsam architecto ut.</p>
-                  </div>
-                </div>
-
-                <div class="col-md-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                    <i class="bi bi-journal-richtext"></i>
-                    <span data-purecounter-start="0" data-purecounter-end="85" data-purecounter-duration="2" class="purecounter"></span>
-                    <p><strong>Projects</strong> adipisci atque cum quia aspernatur totam laudantium et quia dere tan</p>
-                  </div>
-                </div>
-
-                <div class="col-md-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                    <i class="bi bi-clock"></i>
-                    <span data-purecounter-start="0" data-purecounter-end="35" data-purecounter-duration="4" class="purecounter"></span>
-                    <p><strong>Years of experience</strong> aut commodi quaerat modi aliquam nam ducimus aut voluptate non vel</p>
-                  </div>
-                </div>
-
-                <div class="col-md-6 d-md-flex align-items-md-stretch">
-                  <div class="count-box">
-                    <i class="bi bi-award"></i>
-                    <span data-purecounter-start="0" data-purecounter-end="20" data-purecounter-duration="4" class="purecounter"></span>
-                    <p><strong>Awards</strong> rerum asperiores dolor alias quo reprehenderit eum et nemo pad der</p>
-                  </div>
-                </div>
-              </div>
-            </div><!-- End .content-->
-          </div>
-        </div>
-
-      </div>
-    </section><!-- End Counts Section -->
 
     <!-- ======= Testimonials Section ======= -->
-    <section id="testimonials" class="testimonials" style="background: url('/static/men/images/testimonials-bg.jpg') no-repeat; color:white;">
-      <div class="container" data-aos="zoom-in">
-
-        <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-          <div class="swiper-wrapper">
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="/static/men/images/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                <h3>Saul Goodman</h3>
-                <h4>Ceo &amp; Founder</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="/static/men/images/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                <h3>Sara Wilsson</h3>
-                <h4>Designer</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="/static/men/images/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                <h3>Jena Karlis</h3>
-                <h4>Store Owner</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="/static/men/images/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                <h3>Matt Brandon</h3>
-                <h4>Freelancer</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-
-            <div class="swiper-slide">
-              <div class="testimonial-item">
-                <img src="/static/men/images/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                <h3>John Larson</h3>
-                <h4>Entrepreneur</h4>
-                <p>
-                  <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                  Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
-                  <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                </p>
-              </div>
-            </div><!-- End testimonial item -->
-          </div>
-          <div class="swiper-pagination"></div>
-        </div>
-
-      </div>
-    </section><!-- End Testimonials Section -->
 
     <!-- ======= Team Section ======= -->
-    <section id="team" class="team">
-      <div class="container" data-aos="fade-up">
-
-        <div class="section-title">
-          <h2>Team</h2>
-          <p>Check our Team</p>
-        </div>
-
-        <div class="row">
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="100">
-              <div class="member-img">
-                <img src="/static/men/images/team/team-1.jpg" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Walter White</h4>
-                <span>Chief Executive Officer</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="200">
-              <div class="member-img">
-                <img src="/static/men/images/team/team-2.jpg" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Sarah Jhonson</h4>
-                <span>Product Manager</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="300">
-              <div class="member-img">
-                <img src="/static/men/images/team/team-3.jpg" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>William Anderson</h4>
-                <span>CTO</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
-            <div class="member" data-aos="fade-up" data-aos-delay="400">
-              <div class="member-img">
-                <img src="/static/men/images/team/team-4.jpg" class="img-fluid" alt="">
-                <div class="social">
-                  <a href=""><i class="bi bi-twitter"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
-                </div>
-              </div>
-              <div class="member-info">
-                <h4>Amanda Jepson</h4>
-                <span>Accountant</span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Team Section -->
+<!-- End Team Section -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
@@ -525,58 +243,6 @@
           <iframe style="border:0; width: 100%; height: 270px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d12097.433213460943!2d-74.0062269!3d40.7101282!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xb89d1fe6bc499443!2sDowntown+Conference+Center!5e0!3m2!1smk!2sbg!4v1539943755621" frameborder="0" allowfullscreen></iframe>
         </div>
 
-        <div class="row mt-5">
-
-          <div class="col-lg-4">
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>A108 Adam Street, New York, NY 535022</p>
-              </div>
-
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>info@example.com</p>
-              </div>
-
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
-              </div>
-
-            </div>
-
-          </div>
-
-          <div class="col-lg-8 mt-5 mt-lg-0">
-
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-
-          </div>
 
         </div>
 
