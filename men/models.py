@@ -18,6 +18,12 @@ class Men(models.Model):
         return reverse('post', kwargs={ 'post_id':self.pk })
 
 
+    class Meta:
+        verbose_name = 'Moto'
+        verbose_name_plural = 'Moto'
+        ordering = ['-time_create', 'title']
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100, db_index = True)
 
@@ -25,4 +31,9 @@ class Category(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('category', kwargs={ 'cat_id':self.pk })
+        return reverse('category', kwargs={'cat_id':self.pk})
+
+    class Meta:
+        verbose_name = 'Categories'
+        verbose_name_plural = 'Categories'
+
