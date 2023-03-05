@@ -1,4 +1,5 @@
 {% extends 'men/base.html' %}
+{% load men_tags  %}
 
 {% block content %}
 
@@ -23,27 +24,16 @@
         <div class="col-xl-2 col-md-4">
           <div class="icon-box">
             <i class="ri-bar-chart-box-line"></i>
-            <h3><a href="">Мопед жалға</a></h3>
+            <h3><a href="{% url 'renting' %}">Жалға</a></h3>
           </div>
         </div>
         <div class="col-xl-2 col-md-4">
           <div class="icon-box">
             <i class="ri-calendar-todo-line"></i>
-            <h3><a href="">Мотоцикл жалға</a></h3>
+            <h3><a href="{% url 'satu' %}">Сатылатын</a></h3>
           </div>
         </div>
-        <div class="col-xl-2 col-md-4">
-          <div class="icon-box">
-            <i class="ri-paint-brush-line"></i>
-            <h3><a href="">Сатылымдағы мапед</a></h3>
-          </div>
-        </div>
-        <div class="col-xl-2 col-md-4">
-          <div class="icon-box">
-            <i class="ri-database-2-line"></i>
-            <h3><a href="">Сатылымдағы мотоцикл</a></h3>
-          </div>
-        </div>
+
       </div>
 
     </div>
@@ -72,20 +62,15 @@
 
         <div class="row" data-aos="fade-up" data-aos-delay="100">
           <div class="col-lg-12 d-flex justify-content-center">
+<!--            {% getcats filter=1 %}-->
+
             <ul id="portfolio-flters">
               {% if cat_selected == 0 %}
                         <li data-filter="*" class="filter">Барлығы</li>
               {% else  %}
                        <a href="{% url 'home' %}#portfolio"> <li data-filter="*" class="filter">Барлығы</li></a>
               {% endif %}
-              {% for c in cats %}
-               {% if c.pk == cat_selected %}
-                   <li data-filter=".filter-app active">{{c.name}}</li>
-               {% else  %}
-                  <a href="{{ c.get_absolute_url }}#portfolio"> <li data-filter="*" class="filter-app">{{c.name}}</li></a>
-               {% endif %}
-
-               {% endfor %}
+             {% show_categories  %}
             </ul>
           </div>
         </div>
@@ -113,110 +98,6 @@
 
           {% endfor %}
 
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_2213_1.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>M8 скутер</h4>-->
-<!--                <p>Бағасы: 550000</p>-->
-<!--                <p>Көлемі: 125 см</p>-->
-<!--                <p>Салмағы: 100 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
-
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_2213_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-web">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_1845.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>BWS-R Samurai</h4>-->
-<!--                <p>Бағасы: 450000</p>-->
-<!--                <p>Көлемі: 125 см3</p>-->
-<!--                <p>Салмағы: 100 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_1845.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_2088_1.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>Cross </h4>-->
-<!--               <p>Жалға беріледі</p>-->
-<!--                <p>Көлемі: 150 см3</p>-->
-<!--                <p>Салмағы: 120 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Жалға алу</a></li>-->
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_2088_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--          <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">-->
-
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_2213_1.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>M8 скутер</h4>-->
-<!--                <p>Бағасы: 550000</p>-->
-<!--                <p>Көлемі: 125 см3</p>-->
-<!--                <p>Салмағы: 100 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
-
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_2213_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-web">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_1845.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>BWS-R Samurai</h4>-->
-<!--                <p>Бағасы: 450000</p>-->
-<!--                <p>Көлемі: 125 см3</p>-->
-<!--                <p>Салмағы: 100 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>-->
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_1845.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-
-<!--          <div class="col-lg-4 col-md-6 portfolio-item filter-app">-->
-<!--            <div class="portfolio-wrap">-->
-<!--              <img src="https://ivicity.kz/download/images/IMG_2088_1.jpg" class="img-fluid" alt="">-->
-<!--              <div class="portfolio-info">-->
-<!--                <h4>Cross </h4>-->
-<!--               <p>Жалға беріледі</p>-->
-<!--                <p>Көлемі: 150 см3</p>-->
-<!--                <p>Салмағы: 120 кг</p>-->
-<!--                <li><a class="nav na" href="#hero">Толығырақ</a><a class="nav na" href="#hero">Жалға алу</a></li>-->
-<!--                <div class="portfolio-links">-->
-<!--                  <a href="https://ivicity.kz/download/images/IMG_2088_1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bx bx-plus"></i></a>-->
-<!--                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>-->
-<!--                </div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
 
 
         </div>

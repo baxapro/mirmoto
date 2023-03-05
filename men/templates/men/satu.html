@@ -1,0 +1,38 @@
+{% extends 'men/base.html' %}
+
+{% block content %}
+  <section id="portfolio" class="portfolio" style="margin-top:60px">
+      <div class="container" data-aos="fade-up">
+
+
+
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+
+          {% for i in posts %}
+          <div class="col-lg-4 col-md-6 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="{{ i.photo.url }}" class="img-fluid" alt="" style="height:400px;">
+              <div class="portfolio-info">
+                <h4>{{ i.title }}</h4>
+                <p>{{ i.content }}</p>
+                <p>{{ i.content1 }}</p>
+                <p>{{ i.content2 }}</p>
+                <li><a class="nav na" href="{{ i.get_absolute_url }}">Толығырақ</a><a class="nav na" href="#hero">Сатып алу</a></li>
+
+                <div class="portfolio-links">
+                  <a href=" {{ i.photo}}" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bx bx-plus"></i></a>
+                  <a href="portfolio-details.html" title="More Details"><i class="bx bx-link"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {% endfor %}
+
+
+
+        </div>
+     </div>
+    </section>
+
+{% endblock %}

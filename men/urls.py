@@ -11,8 +11,10 @@ urlpatterns = [
     path('qyzmet/',qyzmet, name= 'qyzmet'),
     path('registration/',registration, name= 'registration'),
     path('login/',login, name= 'login'),
-    path('post/<int:post_id>/',show_post,name = 'post'),
-    path('category/<int:cat_id>/',show_category,name = 'category')
+    path('post/<slug:post_slug>/',show_post,name = 'post'),
+    path('category/<int:cat_id>/',show_category,name = 'category'),
+    path('zhalga',renting,name = 'renting'),
+    path('satu',satu,name = 'satu')
 
 
 ]

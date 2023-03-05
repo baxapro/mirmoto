@@ -1,0 +1,8 @@
+ {% for c in cats %}
+    {% if c.pk == cat_selected %}
+        <li data-filter=".filter-app active">{{c.name}}</li>
+    {% else  %}
+        <a href="{{ c.get_absolute_url }}#portfolio"> <li data-filter="*" class="filter-app">{{c.name}}</li></a>
+    {% endif %}
+
+ {% endfor %}
