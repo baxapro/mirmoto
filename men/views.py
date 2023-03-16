@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render , redirect, get_object_or_404
+
+from .forms import *
 from .models import *
 
 # Create your views here.
@@ -31,7 +33,15 @@ def about(request):
     return render(request, 'men/about.html',{'menu': menu,'title':'About page'})
 
 def addproduct(request):
-    return HttpResponse('Add Product')
+    if request.method == 'POST':
+        form = AddProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+
+    else:
+        form = AddProductForm()
+    return render(request, 'men/addProduct.html',{'form':form,'menu':menu,'title':'Add Product'})
 
 def product(request):
     return HttpResponse('Product')
