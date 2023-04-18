@@ -1,50 +1,82 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render , redirect, get_object_or_404
-
+from django.views.generic import ListView,DetailView, CreateView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import *
+from .utils import *
 from .models import *
-
 # Create your views here.
 
-menu = [{'title': 'Басты бет','url_name': 'home'},
-        {'title': 'Біз туралы','url_name': 'about'},
-        {'title': 'Мопед қосу','url_name': 'add_product'},
-        {'title': 'Қызметтер','url_name': 'qyzmet'},
-        {'title': 'Заттар', 'url_name': 'product'},
-        {'title': 'Байланыс', 'url_name': 'contact'}
 
-        ]
 regis = [{'title':'Тіркелу','url_name':'registration'},
          {'title':'Кіру','url_name':'login'}
          ]
 
-def index(request):
-    posts = Men.objects.all()
-    context = {
-        'posts': posts,
-        'menu': menu,
-        'regis':regis,
-        'title': 'Index page',
-        'cat_selected': 0,
-    }
-    return render(request, 'men/index.html',context = context)
+class MenHome(DataMixin,ListView):
+    model = Men
+    template_name = 'men/index.html'
+    context_object_name = 'posts'
+
+
+    def get_context_data(self, *, object_list=None,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regis']=regis
+        c_def=self.get_user_context(title='Главная страница')
+        return dict(list(context.items())+list(c_def.items()))
+    def get_queryset(self):
+        return Men.objects.filter(is_published=True)
+
+# def index(request):
+#     posts = Men.objects.all()
+#     context = {
+#         'posts': posts,
+#         'menu': menu,
+#         'regis':regis,
+#         'title': 'Index page',
+#         'cat_selected': 0,
+#     }
+#     return render(request, 'men/index.html',context = context)
 
 def about(request):
     return render(request, 'men/about.html',{'menu': menu,'title':'About page'})
 
-def addproduct(request):
-    if request.method == 'POST':
-        form = AddProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('home')
 
-    else:
-        form = AddProductForm()
-    return render(request, 'men/addProduct.html',{'form':form,'menu':menu,'title':'Add Product'})
+class AddProduct(LoginRequiredMixin,DataMixin,CreateView):
+    form_class = AddProductForm
+    template_name = 'men/addProduct.html'
+    success_url = reverse_lazy('home')
+    login_url='/admin/'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regis'] = regis
+        c_def=self.get_user_context(title='ADD product')
+        return dict(list(context.items())+list(c_def.items()))
+
+
+# def addproduct(request):
+#     if request.method == 'POST':
+#         form = AddProductForm(request.POST, request.FILES)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('home')
+#
+#     else:
+#         form = AddProductForm()
+#     return render(request, 'men/addProduct.html',{'form':form,'menu':menu,'title':'Add Product'})
 
 def product(request):
-    return HttpResponse('Product')
+    things = Thing.objects.all()
+    context = {
+        'things': things,
+        'menu': menu,
+        'regis':regis,
+        'title': 'Thing page',
+
+    }
+
+    return render(request, 'men/thing.html', context=context)
 
 def contact(request):
     return HttpResponse('Contact')
@@ -59,28 +91,58 @@ def login(request):
     return HttpResponse('Login')
 
 
-def show_post(request,post_slug):
-    post = get_object_or_404(Men, slug=post_slug)
+class ShowPost(DataMixin,DetailView):
+    model = Men
+    template_name= 'men/post.html'
+    slug_url_kwarg = 'post_slug'
+    context_object_name = 'post'
 
-    context = {
-        'post': post,
-        'menu': menu,
-        'title': post.title,
-        'cat_selected': post.cat_id,
-    }
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regis'] = regis
+        c_def = self.get_user_context(title=context['post'])
+        return dict(list(context.items())+list(c_def.items()))
 
-    return render(request,'men/post.html', context=context)
+# def show_post(request,post_slug):
+#     post = get_object_or_404(Men, slug=post_slug)
+#
+#     context = {
+#         'post': post,
+#         'menu': menu,
+#         'title': post.title,
+#         'cat_selected': post.cat_id,
+#     }
+#
+#     return render(request,'men/post.html', context=context)
 
-def show_category(request,cat_id):
-    posts = Men.objects.filter(cat_id=cat_id)
-    context = {
-        'posts': posts,
-        'menu': menu,
-        'regis': regis,
-        'title': 'Category',
-        'cat_selected': cat_id,
-    }
-    return render(request, 'men/index.html', context=context)
+class MenCategory(DataMixin,ListView):
+    model = Men
+    template_name = 'men/index.html'
+    context_object_name = 'posts'
+    allow_empty = False
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['regis'] = regis
+        c_def=self.get_user_context(title='Category - '+str(context['posts'][0].cat),
+                                    cat_selected=context['posts'][0].cat_id)
+
+        return dict(list(context.items())+list(c_def.items()))
+
+
+    def get_queryset(self):
+        return Men.objects.filter(cat__slug=self.kwargs['cat_slug'], is_published = True)
+
+# def show_category(request,cat_id):
+#     posts = Men.objects.filter(cat_id=cat_id)
+#     context = {
+#         'posts': posts,
+#         'menu': menu,
+#         'regis': regis,
+#         'title': 'Category',
+#         'cat_selected': cat_id,
+#     }
+#     return render(request, 'men/index.html', context=context)
 
 def satu(request):
     posts = Men.objects.filter(cat_id=2)

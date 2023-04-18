@@ -18,5 +18,13 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('name',)
     prepopulated_fields = {"slug": ("name",)}
 
+class ThingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'time_create', 'photo')
+    list_display_links = ('id', 'name')
+    search_fields = ('name', 'content')
+    prepopulated_fields = {"slug": ("name",)}
+
+
 admin.site.register(Men, MenAdmin)
 admin.site.register(Category,CategoryAdmin)
+admin.site.register(Thing,ThingAdmin)

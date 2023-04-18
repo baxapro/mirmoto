@@ -9,6 +9,7 @@ a {
   text-decoration: none;
 }
 
+
 a:hover {
   color: #ffd584;
   text-decoration: none;
@@ -26,6 +27,9 @@ h6 {
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
+
+
+
 .back-to-top {
   position: fixed;
   visibility: hidden;
@@ -124,7 +128,10 @@ h6 {
   transition: all 0.5s;
   z-index: 997;
   padding: 15px 0;
+
 }
+
+
 
 #header.header-scrolled,
 #header.header-inner-pages {
@@ -427,6 +434,7 @@ h6 {
   position: relative;
   padding-top: 74px;
   text-align: center;
+  background-color:#CEA764;
 }
 
 #hero h1 {
