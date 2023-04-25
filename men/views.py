@@ -9,11 +9,10 @@ from .models import *
 # Create your views here.
 
 
-regis = [{'title':'Тіркелу','url_name':'registration'},
-         {'title':'Кіру','url_name':'login'}
-         ]
+
 
 class MenHome(DataMixin,ListView):
+    paginete_by = 3
     model = Men
     template_name = 'men/index.html'
     context_object_name = 'posts'
@@ -21,8 +20,8 @@ class MenHome(DataMixin,ListView):
 
     def get_context_data(self, *, object_list=None,**kwargs):
         context = super().get_context_data(**kwargs)
-        context['regis']=regis
-        c_def=self.get_user_context(title='Главная страница')
+
+        c_def = self.get_user_context(title='Главная страница')
         return dict(list(context.items())+list(c_def.items()))
     def get_queryset(self):
         return Men.objects.filter(is_published=True)
@@ -46,12 +45,13 @@ class AddProduct(LoginRequiredMixin,DataMixin,CreateView):
     form_class = AddProductForm
     template_name = 'men/addProduct.html'
     success_url = reverse_lazy('home')
-    login_url='/admin/'
+    login_url = reverse_lazy('home')
+    raise_exception = True
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['regis'] = regis
-        c_def=self.get_user_context(title='ADD product')
+
+        c_def = self.get_user_context(title='ADD product')
         return dict(list(context.items())+list(c_def.items()))
 
 
@@ -84,8 +84,15 @@ def contact(request):
 def qyzmet(request):
     return HttpResponse('Qyzmet')
 
-def registration(request):
-    return HttpResponse('Registration')
+class RegisterUser(DataMixin, CreateView):
+    form_class = RegisterUserForm
+    template_name = 'men/register.html'
+    success_url = reverse_lazy('login')
+
+    def get_context_data(self, *, object_list=None,**kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Регистрация')
+        return dict(list(context.items())+list(c_def.items()))
 
 def login(request):
     return HttpResponse('Login')
@@ -99,7 +106,7 @@ class ShowPost(DataMixin,DetailView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['regis'] = regis
+
         c_def = self.get_user_context(title=context['post'])
         return dict(list(context.items())+list(c_def.items()))
 
@@ -123,7 +130,7 @@ class MenCategory(DataMixin,ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['regis'] = regis
+
         c_def=self.get_user_context(title='Category - '+str(context['posts'][0].cat),
                                     cat_selected=context['posts'][0].cat_id)
 
