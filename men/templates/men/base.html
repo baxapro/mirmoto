@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>{{ title }}</title>
     <link rel="stylesheet" href="{% static 'men/css/style.css' %}" type="text/css">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 </head>
 <style>
     .header-dd{
@@ -47,11 +47,19 @@
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
+
+        {% if request.user.is_authenticated %}
+               <ul>
+          <li style="color:white;"> {{ user.username }} | <a  class="nav-link" href="{% url  'logout' %}">Выйти</a></li>
+               </ul>
+        {% else %}
           {% for f in regis %}
 
                    <a href="{% url f.url_name %} " class="get-started-btn scrollto">{{f.title}}</a>
 
             {% endfor %}
+        {% endif %}
+
 
 
     </div>

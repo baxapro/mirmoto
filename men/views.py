@@ -1,16 +1,44 @@
 from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render , redirect, get_object_or_404
-from django.views.generic import ListView,DetailView, CreateView
+from django.views.generic import ListView,DetailView, CreateView, FormView
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout, login
+from django.forms import model_to_dict
+from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .forms import *
+from .serializer import MenSerializer
 from .utils import *
 from .models import *
 # Create your views here.
 
 
 
+class MenApiView(APIView):
+    def get(self, request):
+        w = Men.objects.all()
+        return Response({'posts':MenSerializer(w, many=True).data})
 
+    def post(self, request):
+
+        serializer = MenSerializer(data = request.data)
+        serializer.is_valid(raise_exeption = True)
+        post_new = Men.objects.create(
+            title=request.data['title'],
+            content = request.data['content'],
+            cat_id = request.data['cat_id'],
+            content1 = request.data['content1'],
+            content2 = request.data['content2']
+        )
+        return Response({'post': MenSerializer(post_new).data})
+
+#
+# class MenApiView(generics.ListAPIView):
+#     queryset = Men.objects.all()
+#     serializer_class = MenSerializer
 class MenHome(DataMixin,ListView):
     paginete_by = 3
     model = Men
@@ -77,9 +105,23 @@ def product(request):
     }
 
     return render(request, 'men/thing.html', context=context)
+#
+# def contact(request):
+#     return HttpResponse('Contact')
 
-def contact(request):
-    return HttpResponse('Contact')
+class ContactFormView(DataMixin, FormView):
+    form_class = ContactForm
+    template_name = 'men/contact.html'
+    success_url = reverse_lazy('home')
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title = "Обратная связь")
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def form_valid(self, form):
+        print(form.cleaned_data)
+        return redirect('home')
 
 def qyzmet(request):
     return HttpResponse('Qyzmet')
@@ -94,9 +136,24 @@ class RegisterUser(DataMixin, CreateView):
         c_def = self.get_user_context(title='Регистрация')
         return dict(list(context.items())+list(c_def.items()))
 
-def login(request):
-    return HttpResponse('Login')
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request,user)
+        return redirect('home')
+class LoginUser(DataMixin,LoginView):
+    form_class = LoginUserForm
+    template_name = 'men/login.html'
 
+    def get_context_date(self, *, object_list=None,**kwargs):
+        context = super().get_context_date(**kwargs)
+        c_def = self.get_user_context(title="Login")
+        return dict(list(context.items())+list(c_def.items()))
+    def get_success_url(self):
+        return reverse_lazy('home')
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')
 
 class ShowPost(DataMixin,DetailView):
     model = Men
