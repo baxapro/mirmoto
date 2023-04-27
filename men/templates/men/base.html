@@ -44,15 +44,21 @@
             {% endif %}
 
             {% endfor %}
+            {% if request.user.is_authenticated %}
+                  <li><a class="nav-link scrollto" href="#">|</a></li>
+
+            {%endif%}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
-      </nav><!-- .navbar -->
+
 
         {% if request.user.is_authenticated %}
                <ul>
-          <li style="color:white;"> {{ user.username }} | <a  class="nav-link" href="{% url  'logout' %}">Выйти</a></li>
+                    <li><a class="nav-link scrollto" href="#">{{user.username}}</a></li>
+                 <li style="color:white;"> <a  class="nav-link" href="{% url  'logout' %}">Выйти</a></li>
                </ul>
         {% else %}
+            </nav><!-- .navbar -->
           {% for f in regis %}
 
                    <a href="{% url f.url_name %} " class="get-started-btn scrollto">{{f.title}}</a>
@@ -77,15 +83,26 @@
   <footer class="text-center text-white" style="background-color: #551B11;">
     <!-- Grid container -->
     <div class="container p-4 pb-0">
+         {% if request.user.is_authenticated %}
+         <section class="">
+        <p class="d-flex justify-content-center align-items-center">
+        <span class="me-3">User is authenticated - </span>
+        <button type="button" class="btn btn-outline-light btn-rounded">
+              {{ user.username }}
+          </button>
+        </p>
+         </section>
+        {% else %}
       <!-- Section: CTA -->
       <section class="">
         <p class="d-flex justify-content-center align-items-center">
           <span class="me-3">Register for free</span>
-          <button type="button" class="btn btn-outline-light btn-rounded">
-            Sign up!
-          </button>
+         <a href="{% url 'registration' %}"> <button type="button" class="btn btn-outline-light btn-rounded">
+              Sign up!
+          </button></a>
         </p>
       </section>
+        {% endif %}
       <!-- Section: CTA -->
     </div>
     <!-- Grid container -->
